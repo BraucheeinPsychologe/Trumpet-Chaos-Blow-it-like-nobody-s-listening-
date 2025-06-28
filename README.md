@@ -1,4 +1,4 @@
-[GH Page](https://braucheeinpsychologe.github.io/Trumpet-Chaos-Blow-it-like-nobody-s-listening-/index.html)
+[GH Page](https://braucheeinpsychologe.github.io/Trumpet-Chaos-Blow-it-like-nobody-s-listening-/)
 # Description
 Hit the notes? Stay on beat? Forget it.
 Trumpet Chaos throws you into a musical mess where the only rule is: blow hard and embrace the madness!
@@ -19,4 +19,4 @@ Unlock ridiculous skins, from classy gold to cardboard trash. Score points, crea
 - 📱 Playable in-browser, mobile-friendly, ad-supported
 
 # Anything else?
-Sure. The Game is work-in-progress but you can Check it out anytime by visiting the GitHub Page [GH Page](https://braucheeinpsychologe.github.io/Trumpet-Chaos-Blow-it-like-nobody-s-listening-/index.html).
+Sure. The Game is work-in-progress but you can Check it out anytime by visiting the GitHub Page [GH Page](https://braucheeinpsychologe.github.io/Trumpet-Chaos-Blow-it-like-nobody-s-listening-/).
