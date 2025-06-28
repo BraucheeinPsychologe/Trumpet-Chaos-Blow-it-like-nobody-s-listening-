@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trumpet Chaos</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
+  <style>
+    body { font-family: sans-serif; margin: 0; background: #111; color: white; }
+    header, footer { background: #222; padding: 1rem; text-align: center; }
+    nav i {
+      margin: 0 10px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: white;
+    }
+    .ui-section { display: none; padding: 1rem; }
+    .active { display: block !important; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <header>
+      <h1>Trumpet Chaos</h1>
+      <nav>
+        <i class="fa-solid fa-house" onclick="displayUI('lobby_UI');"></i>
+        <i class="fa-solid fa-question" onclick="displayUI('howto_UI');"></i>
+        <i class="fa-solid fa-info" onclick="displayUI('info_UI');"></i>
+        <i class="fa-solid fa-gear" onclick="displayUI('settings_UI');"></i>
+      </nav>
+    </header>
+  </div>
+
+  <div id="settings_UI" class="ui-section">
+    <h2>Settings</h2>
+    <p>Coming soon...</p>
+  </div>
+
+  <div id="howto_UI" class="ui-section">
+    <h2>How to Play</h2>
+    <p>Blow stuff. Don’t die. Profit.</p>
+  </div>
+
+  <div id="info_UI" class="ui-section">
+    <h2>Info</h2>
+    <p>A free-to-play, browser-based musical chaos game.</p>
+  </div>
+
+  <div id="lobby_UI" class="ui-section active">
+    <h2>Welcome to Trumpet Chaos</h2>
+    <p>Select a mode and blow your trumpet!</p>
+  </div>
+
+  <div id="game_UI" class="ui-section">
+    <h2>Game Screen</h2>
+    <p>Game will appear here.</p>
+  </div>
+
+  <div class="footer">
+    <footer>
+        Trumpet Chaos by <a href="https://github.com/BraucheeinPsychologe/Trumpet-Chaos-Blow-it-like-nobody-s-listening-/tree/main" target="_blank">braucheeinpsychologe</a>
+    </footer>
+  </div>
+
+  <script>
+    function displayUI(idToShow) {
+      const sections = document.querySelectorAll('.ui-section');
+      sections.forEach(sec => sec.classList.remove('active'));
+      const el = document.getElementById(idToShow);
+      if (el) el.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
