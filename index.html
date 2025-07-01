@@ -6,62 +6,99 @@
   <title>Trumpet Chaos</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
   <style>
-      * { margin: 0; box-sizing: border-box; }
-    body { font-family: sans-serif; margin: 0; background: #111; color: white; }
-    header, footer { background: #222; padding: 1rem; text-align: center; }
-    nav i {
-      margin: 0 10px;
-      cursor: pointer;
-      font-size: 1.5rem;
-      color: white;
-    }
-    
-    .skin-container {
-    display: block;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 15px;
-    border: 2px solid #404040b5;
-    padding: 10px;
-    margin: 10px;
-    background-color: #1e1e1e;
-    color: white;
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-    overflow: auto;
+      * {
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.skin-container:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 10px #ffffff1a;
+body {
+  font-family: sans-serif;
+  margin: 0;
+  background: #111;
+  color: white;
 }
 
+header,
+footer {
+  background: #222;
+  padding: 1rem;
+  text-align: center;
+}
+
+nav i {
+  margin: 0 10px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: white;
+  transition: color 0.2s;
+}
+
+nav i:hover {
+  color: #ccc;
+}
+
+/* Basis-Card-Stil für Skins, Songs & Characters */
+.card {
+  display: block;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  border: 2px solid #404040b5;
+  padding: 10px;
+  margin: 10px;
+  background-color: #1e1e1e;
+  color: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  overflow: auto;
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 10px #ffffff1a;
+}
+
+/* Separat, falls du andere Container brauchst */
 .container {
-    display: block;
-    align-items: center;
-    justify-content: center;
-    border-radius: 15px;
-    border: 2px solid #404040b5;
-    padding: 10px;
-    margin: 10px;
-    background-color: #1e1e1e;
-    color: white;
-    transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 15px;
+  border: 2px solid #404040b5;
+  padding: 10px;
+  margin: 10px;
+  background-color: #1e1e1e;
+  color: white;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
+/* Für Buttons und Auswahlmenüs */
 .interactive {
-    border-radius: 15px;
-    border: 2px solid #404040b5;
-    padding: 10px;
-    margin: 10px;
-    background-color: #1e1e1e;
-    color: white;
-    transition: transform 0.2s, box-shadow 0.2s;    
+  border-radius: 15px;
+  border: 2px solid #404040b5;
+  padding: 10px;
+  margin: 10px;
+  background-color: #1e1e1e;
+  color: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
 }
-    .ui-section { display: none; padding: 1rem; }
-    .active { display: block !important; }
-    .hidden {display: none;}
+
+.interactive:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 10px #ffffff1a;
+}
+
+.ui-section {
+  display: none;
+  padding: 1rem;
+}
+
+.ui-section.active {
+  display: block !important;
+}
+
+.hidden {
+  display: none;
+}
   </style>
 </head>
 <body>
