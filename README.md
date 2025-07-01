@@ -1,4 +1,7 @@
-[GH Page](https://braucheeinpsychologe.github.io/Trumpet-Chaos-Blow-it-like-nobody-s-listening-/)
+[GH Page]
+(https://braucheeinpsychologe.github.io/Trumpet-Chaos-Blow-it-like-nobody-s-listening-/)
+
+[![pages-build-deployment](https://github.com/BraucheeinPsychologe/Trumpet-Chaos-Blow-it-like-nobody-s-listening-/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main)](https://github.com/BraucheeinPsychologe/Trumpet-Chaos-Blow-it-like-nobody-s-listening-/actions/workflows/pages/pages-build-deployment)
 # Description
 Hit the notes? Stay on beat? Forget it.
 Trumpet Chaos throws you into a musical mess where the only rule is: blow hard and embrace the madness!
