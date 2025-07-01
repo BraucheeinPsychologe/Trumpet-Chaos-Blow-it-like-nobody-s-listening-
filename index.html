@@ -6,20 +6,19 @@
   <title>Trumpet Chaos</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
   <style>
-      * {
+    * {
   margin: 0;
   box-sizing: border-box;
 }
 
 body {
   font-family: sans-serif;
-  margin: 0;
   background: #111;
   color: white;
+  line-height: 1.4;
 }
 
-header,
-footer {
+header, footer {
   background: #222;
   padding: 1rem;
   text-align: center;
@@ -37,12 +36,7 @@ nav i:hover {
   color: #ccc;
 }
 
-/* Basis-Card-Stil für Skins, Songs & Characters */
-.card {
-  display: block;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.card, .container, .interactive {
   border-radius: 15px;
   border: 2px solid #404040b5;
   padding: 10px;
@@ -50,48 +44,22 @@ nav i:hover {
   background-color: #1e1e1e;
   color: white;
   transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  overflow: auto;
 }
 
-.card:hover {
+.card, .interactive {
+  cursor: pointer;
+}
+
+.card:hover, .interactive:hover {
   transform: scale(1.03);
   box-shadow: 0 0 10px #ffffff1a;
 }
 
-/* Separat, falls du andere Container brauchst */
-.container {
-  border-radius: 15px;
-  border: 2px solid #404040b5;
-  padding: 10px;
-  margin: 10px;
-  background-color: #1e1e1e;
-  color: white;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-    /* Container für die Auswahl-Items als Grid */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* mind. 150px breit, dann flexibel */
-  gap: 15px; /* Abstand zwischen den Items */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
   padding: 10px;
-}
-
-/* Für Buttons und Auswahlmenüs */
-.interactive {
-  border-radius: 15px;
-  border: 2px solid #404040b5;
-  padding: 10px;
-  margin: 10px;
-  background-color: #1e1e1e;
-  color: white;
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-}
-
-.interactive:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 10px #ffffff1a;
 }
 
 .ui-section {
@@ -106,6 +74,87 @@ nav i:hover {
 .hidden {
   display: none;
 }
+
+/* Neue Styles für die Locker-Items */
+.locker-item {
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  background: #2a2a2a;
+  border: 2px solid #404040;
+  transition: all 0.3s ease;
+}
+
+.locker-item:hover {
+  border-color: #666;
+  background: #333;
+}
+
+.locker-item.selected {
+  border-color: #4CAF50;
+  background: #2d4a2d;
+}
+
+.locker-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.locker-item h3 {
+  margin: 10px 0 5px 0;
+  font-size: 1.1em;
+}
+
+.locker-item p {
+  font-size: 0.9em;
+  color: #ccc;
+  margin: 5px 0;
+}
+
+.locker-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.play-button {
+  background: #4CAF50;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.play-button:hover {
+  background: #45a049;
+}
+
+.song-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.difficulty {
+  padding: 3px 8px;
+  border-radius: 15px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.difficulty.easy { background: #4CAF50; }
+.difficulty.medium { background: #FF9800; }
+.difficulty.hard { background: #F44336; }
+.difficulty.impossible { background: #9C27B0; }
   </style>
 </head>
 <body>
@@ -137,23 +186,37 @@ nav i:hover {
     <p>A free-to-play, browser-based musical chaos game.</p>
   </div>
 
+
+
+  
   <div id="lobby_UI" class="ui-section active">
-    <h2>Welcome to Trumpet Chaos</h2>
-    <p>Select a mode and blow your trumpet!</p>
-     <div class="container" id="locker" style="display: flex;">
-        <p>Locker</p>
-        <button class="interactive" onClick="ToggleMenu('skins')">Skins</button>  
-<button class="interactive" onClick="ToggleMenu('character')">Characters</button>  
-<button class="interactive" onClick="ToggleMenu('songs')">Songs</button>
-        <br>
-        <div id="lobby_UI_skins" class="hidden grid-container"><div id="lobby_UI_skins_div"></div></div>  
-<div id="lobby_UI_character" class="hidden grid-container"><div id="lobby_UI_chracter_div"></div></div>  
-<div id="lobby_UI_songs" class="hidden grid-container"><div id="lobby_UI_songs_div"></div></div>
+  <h2>Welcome to Trumpet Chaos</h2>
+  <p>Select a mode and blow your trumpet!</p>
+  <div class="container" id="locker">
+    <h3>Locker</h3>
+    <div class="locker-controls">
+      <button class="interactive" onClick="ToggleMenu('skins')">Skins</button>  
+      <button class="interactive" onClick="ToggleMenu('character')">Characters</button>  
+      <button class="interactive" onClick="ToggleMenu('songs')">Songs</button>
+    </div>
     
-<div id="lobby_UI_control">
-    <button id="lobby_UI_control_play" onClick="playGame()" class="interactive">Play</button>
-</div>
-     </div>
+    <div id="lobby_UI_skins" class="hidden grid-container">
+      <div id="lobby_UI_skins_div"></div>
+    </div>  
+    
+    <div id="lobby_UI_character" class="hidden grid-container">
+      <div id="lobby_UI_character_div"></div>
+    </div>  
+    
+    <div id="lobby_UI_songs" class="hidden grid-container">
+      <div id="lobby_UI_songs_div"></div>
+    </div>
+    
+    <div class="locker-controls">
+      <button id="lobby_UI_control_play" onClick="playGame()" class="play-button">Play</button>
+    </div>
+  </div>
+  </div>
 
   
 
@@ -227,36 +290,37 @@ function DisplaySkins() {
 
     skins.forEach(skin => {
         const skinContainer = document.createElement("div");
-        skinContainer.classList.add("skin-container");
+        skinContainer.classList.add("locker-item");
               
-        // Bild
         const img = document.createElement("img");
         img.src = skin.image;
         img.alt = skin.name;
 
-        // Name
-        const nameLabel = document.createElement("span");
+        const nameLabel = document.createElement("h3");
         nameLabel.textContent = skin.name;
         
-        //Beachreibung
         const descPargh = document.createElement("p");
-        descPargh.textContent = skin.desc
+        descPargh.textContent = skin.desc;
 
-        // Einfügen
         skinContainer.appendChild(img);
         skinContainer.appendChild(nameLabel);
         skinContainer.appendChild(descPargh);
 
-        // Klick-Event oder andere Interaktivität
         skinContainer.addEventListener("click", () => {
             console.log(`Skin gewählt: ${skin.name}`);
-          
-          localStorage.setItem("locker_picked_skin", skin.name);
+            localStorage.setItem("locker_picked_skin", skin.name);
+            
+            // Alle anderen Skins deselektieren
+            document.querySelectorAll("#lobby_UI_skins_div .locker-item").forEach(item => {
+                item.classList.remove("selected");
+            });
+            
+            // Aktuelle Auswahl markieren
+            skinContainer.classList.add("selected");
         });
 
         skinsMenuDiv.appendChild(skinContainer);
     });
-    
 }
 
 function ToggleMenu(menuName) {
@@ -284,17 +348,16 @@ function ToggleMenu(menuName) {
 }
 
 function DisplayCharacters() {
-    const charDiv = document.getElementById("lobby_UI_chracter_div");
+    const charDiv = document.getElementById("lobby_UI_character_div");
     charDiv.innerHTML = "";
 
     characters.forEach(char => {
         const div = document.createElement("div");
-        div.classList.add("skin-container");
+        div.classList.add("locker-item");
 
         const img = document.createElement("img");
         img.src = char.image;
         img.alt = char.name;
-        img.style.width = "100px";
 
         const name = document.createElement("h3");
         name.textContent = char.name;
@@ -308,38 +371,73 @@ function DisplayCharacters() {
 
         div.addEventListener("click", () => {
             console.log(`Charakter gewählt: ${char.name}`);  
-                    localStorage.setItem("locker_picked_character", char.name);
+            localStorage.setItem("locker_picked_character", char.name);
             
+            document.querySelectorAll("#lobby_UI_character_div .locker-item").forEach(item => {
+                item.classList.remove("selected");
+            });
+            
+            div.classList.add("selected");
         });
 
         charDiv.appendChild(div);
     });
 }
-
+    
 function DisplaySongs() {
     const songsDiv = document.getElementById("lobby_UI_songs_div");
     songsDiv.innerHTML = "";
 
     songs.forEach(song => {
         const div = document.createElement("div");
-        div.classList.add("skin-container");
+        div.classList.add("locker-item");
 
         const title = document.createElement("h3");
         title.textContent = song.title;
 
-        const info = document.createElement("p");
-        info.textContent = `⏱ ${song.duration} | 🔥 ${song.difficulty}`;
+        const songInfo = document.createElement("div");
+        songInfo.classList.add("song-info");
+
+        const duration = document.createElement("span");
+        duration.textContent = `⏱ ${song.duration}`;
+
+        const difficulty = document.createElement("span");
+        difficulty.classList.add("difficulty", getDifficultyClass(song.difficulty));
+        difficulty.textContent = song.difficulty;
+
+        songInfo.appendChild(duration);
+        songInfo.appendChild(difficulty);
 
         div.appendChild(title);
-        div.appendChild(info);
+        div.appendChild(songInfo);
 
         div.addEventListener("click", () => {
             console.log(`Song ausgewählt: ${song.title}`);
             localStorage.setItem("locker_picked_song", song.title);
+            
+            document.querySelectorAll("#lobby_UI_songs_div .locker-item").forEach(item => {
+                item.classList.remove("selected");
+            });
+            
+            div.classList.add("selected");
         });
 
         songsDiv.appendChild(div);
     });
+}
+    // Funktion für das Spiel starten
+function playGame() {
+    const selectedSkin = localStorage.getItem("locker_picked_skin") || "Brass";
+    const selectedChar = localStorage.getItem("locker_picked_character") || "Normal Guy";
+    const selectedSong = localStorage.getItem("locker_picked_song") || "Song of Chaos";
+    
+    console.log(`Starte Spiel mit: ${selectedSkin}, ${selectedChar}, ${selectedSong}`);
+    displayUI('game_UI');
+}
+
+// Hilfsfunktion für Schwierigkeitsgrad CSS-Klassen
+function getDifficultyClass(difficulty) {
+    return difficulty.toLowerCase().replace(' ', '');
 }
 
   </script>
