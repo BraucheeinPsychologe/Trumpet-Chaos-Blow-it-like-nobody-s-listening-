@@ -69,6 +69,13 @@ nav i:hover {
   color: white;
   transition: transform 0.2s, box-shadow 0.2s;
 }
+    /* Container für die Auswahl-Items als Grid */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* mind. 150px breit, dann flexibel */
+  gap: 15px; /* Abstand zwischen den Items */
+  padding: 10px;
+}
 
 /* Für Buttons und Auswahlmenüs */
 .interactive {
@@ -139,9 +146,9 @@ nav i:hover {
 <button class="interactive" onClick="ToggleMenu('character')">Characters</button>  
 <button class="interactive" onClick="ToggleMenu('songs')">Songs</button>
         
-        <div id="lobby_UI_skins" class="hidden"><div id="lobby_UI_skins_div"></div></div>  
-<div id="lobby_UI_character" class="hidden"><div id="lobby_UI_chracter_div"></div></div>  
-<div id="lobby_UI_songs" class="hidden"><div id="lobby_UI_songs_div"></div></div>
+        <div id="lobby_UI_skins" class="hidden grid-container"><div id="lobby_UI_skins_div"></div></div>  
+<div id="lobby_UI_character" class="hidden grid-container"><div id="lobby_UI_chracter_div"></div></div>  
+<div id="lobby_UI_songs" class="hidden grid-container"><div id="lobby_UI_songs_div"></div></div>
     
 <div id="lobby_UI_control">
     <button id="lobby_UI_control_play" onClick="playGame()" class="interactive">Play</button>
