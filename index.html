@@ -15,6 +15,49 @@
       font-size: 1.5rem;
       color: white;
     }
+    
+    .skin-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    border: 2px solid #404040b5;
+    padding: 10px;
+    margin: 10px;
+    background-color: #1e1e1e;
+    color: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.skin-container:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 10px #ffffff1a;
+}
+
+.container {
+    display: block;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    border: 2px solid #404040b5;
+    padding: 10px;
+    margin: 10px;
+    background-color: #1e1e1e;
+    color: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.interactive {
+    border-radius: 15px;
+    border: 2px solid #404040b5;
+    padding: 10px;
+    margin: 10px;
+    background-color: #1e1e1e;
+    color: white;
+    transition: transform 0.2s, box-shadow 0.2s;    
+}
     .ui-section { display: none; padding: 1rem; }
     .active { display: block !important; }
     .hidden {display: none;}
@@ -52,11 +95,20 @@
   <div id="lobby_UI" class="ui-section active">
     <h2>Welcome to Trumpet Chaos</h2>
     <p>Select a mode and blow your trumpet!</p>
-    <button onClick="ToggleSkinMenu();">Skin Wählen</button>
-    
-    <div id="lobby_UI_skins" class="hidden">  
-        <div id="lobby_UI_skins_div"></div>
-    </div>
+     <div class="container" id="locker" style="display: flex;">
+        <p style="display: block ;">Locker</p>
+        <button class="interactive" onClick="ToggleMenu('skins')">Skins</button>  
+<button class="interactive" onClick="ToggleMenu('character')">Characters</button>  
+<button class="interactive" onClick="ToggleMenu('songs')">Songs</button>
+        
+        <div id="lobby_UI_skins" class="hidden"><div id="lobby_UI_skins_div"></div></div>  
+<div id="lobby_UI_character" class="hidden"><div id="lobby_UI_chracter_div"></div></div>  
+<div id="lobby_UI_songs" class="hidden"><div id="lobby_UI_songs_div"></div></div>
+
+<div id="lobby_UI_control">
+    <button id="lobby_UI_control_play" onClick="playGame()" class="interactive">Play</button>
+</div>
+
   </div>
 
   <div id="game_UI" class="ui-section">
@@ -77,11 +129,24 @@
       const skins = [
     { name: "Brass", image: "/skins/brass.png", desc: "The Default Trumpet."},
     { name: "Copper", image: "/skins/copper.png", desc: "Like the Default one but better."},
-    { name: "Gold", image: "/skins/gold.png", desc: "You habe done well." },
-    { name: "Cardboard", image: "/skins/cardboard.png", desc: "I hope it dosnt rain today." },
+    { name: "Gold", image: "/skins/gold.png", desc: "You have done well." },
+    { name: "Cardboard", image: "/skins/cardboard.png", desc: "I hope it dosn't rain today." },
     { name: "Wood", image: "/skins/wood.png", desc: "How? just How." },
-    { name: "Whistle", image: "/skins/whistle.png", desc: "Low Budget..." }
+    { name: "Whistle", image: "/skins/whistle.png", desc: "Tight Budget, huh?" }
     ];
+    
+    const characters = [
+  { name: "Normal Guy", image: "/characters/normal.png", desc: "Just a normal guy with a trumpet." },
+  { name: "Funny Guy", image: "/characters/funny.png", desc: "He plays jazz... badly." },
+  { name: "Cat with Trumpet", image: "/characters/cat.png", desc: "Yes. A cat. With a trumpet." }
+];
+
+const songs = [
+  { title: "Song of Chaos", duration: "1:20", difficulty: "Hard", file: "/songs/braucheeinpsychologe/sogofchaos.json" },
+  { title: "Silent Blow", duration: "0:45", difficulty: "Easy", file: "/songs/braucheeinpsychologe/silentblow.json" },
+  { title: "Trumpet Hell", duration: "2:00", difficulty: "Impossible", file: "/songs/braucheeinpsychologe/trumpethell.json" }
+];
+
 
     function displayUI(idToShow) {
       const sections = document.querySelectorAll('.ui-section');
@@ -116,8 +181,7 @@ function DisplaySkins() {
     skins.forEach(skin => {
         const skinContainer = document.createElement("div");
         skinContainer.classList.add("skin-container");
-        skinContainer.style = "display: flexbox; border-radius: 15px; border-thickniss: small; border-color: #404040b5;"
-                
+              
         // Bild
         const img = document.createElement("img");
         img.src = skin.image;
@@ -138,12 +202,99 @@ function DisplaySkins() {
 
         // Klick-Event oder andere Interaktivität
         skinContainer.addEventListener("click", () => {
-            console.log(`Ausgewählt: ${skin.name}`);
+            console.log(`Skin gewählt: ${skin.name}`);
+          
+          localStorage.setItem("locker_picked_skin", skin.name);
         });
 
         skinsMenuDiv.appendChild(skinContainer);
     });
+    
 }
+
+function ToggleMenu(menuName) {
+    const menus = {
+        skins: document.getElementById("lobby_UI_skins"),
+        character: document.getElementById("lobby_UI_character"),
+        songs: document.getElementById("lobby_UI_songs")
+    };
+
+    // Alle Menüs verstecken
+    for (let key in menus) {
+        menus[key].classList.add("hidden");
+        menus[key].classList.remove("active");
+    }
+
+    // Aktuelles Menü einblenden
+    const selectedMenu = menus[menuName];
+    selectedMenu.classList.remove("hidden");
+    selectedMenu.classList.add("active");
+
+    // Inhalte anzeigen (z. B. Skins laden)
+    if (menuName === "skins") DisplaySkins();
+    if (menuName === "character") DisplayCharacters();
+    if (menuName === "songs") DisplaySongs();
+}
+
+function DisplayCharacters() {
+    const charDiv = document.getElementById("lobby_UI_chracter_div");
+    charDiv.innerHTML = "";
+
+    characters.forEach(char => {
+        const div = document.createElement("div");
+        div.classList.add("skin-container");
+
+        const img = document.createElement("img");
+        img.src = char.image;
+        img.alt = char.name;
+        img.style.width = "100px";
+
+        const name = document.createElement("h3");
+        name.textContent = char.name;
+
+        const desc = document.createElement("p");
+        desc.textContent = char.desc;
+
+        div.appendChild(img);
+        div.appendChild(name);
+        div.appendChild(desc);
+
+        div.addEventListener("click", () => {
+            console.log(`Charakter gewählt: ${char.name}`);  
+                    localStorage.setItem("locker_picked_character", char.name);
+            
+        });
+
+        charDiv.appendChild(div);
+    });
+}
+
+function DisplaySongs() {
+    const songsDiv = document.getElementById("lobby_UI_songs_div");
+    songsDiv.innerHTML = "";
+
+    songs.forEach(song => {
+        const div = document.createElement("div");
+        div.classList.add("skin-container");
+
+        const title = document.createElement("h3");
+        title.textContent = song.title;
+
+        const info = document.createElement("p");
+        info.textContent = `⏱ ${song.duration} | 🔥 ${song.difficulty}`;
+
+        div.appendChild(title);
+        div.appendChild(info);
+
+        div.addEventListener("click", () => {
+            console.log(`Song ausgewählt: ${song.title}`);
+            localStorage.setItem("locker_picked_song", song.title);
+        });
+
+        songsDiv.appendChild(div);
+    });
+}
+
   </script>
 
 </body>
