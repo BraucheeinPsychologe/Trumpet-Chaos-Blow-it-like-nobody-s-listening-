@@ -121,21 +121,6 @@ nav i:hover {
   margin-top: 20px;
 }
 
-.play-button {
-  background: #4CAF50;
-  padding: 15px 30px;
-  font-size: 1.2em;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.play-button:hover {
-  background: #45a049;
-}
 
 .song-info {
   display: flex;
@@ -155,6 +140,88 @@ nav i:hover {
 .difficulty.medium { background: #FF9800; }
 .difficulty.hard { background: #F44336; }
 .difficulty.impossible { background: #9C27B0; }
+
+.tooltip-wrapper {
+    position: relative;
+    display: block;
+}
+
+.tooltip-wrapper .custom-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    background-color: gray;
+    color: #fff;
+    text-align: center;
+    font-size: 0.8em;
+    border-radius: 15px;
+    padding: 5px 10px;
+    position: absolute;
+    bottom: 105%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 1000;
+    transition: opacity 0.3s;
+}
+
+.tooltip-wrapper:hover .custom-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.leiste {
+      position: fixed;
+      left: 10px; /* kann angepasst werden */
+      top: 20%;
+      width: 40px;
+      height: 60%;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .griff {
+      width: 30px;
+      height: 30px;
+      background-color: #ffcc00;
+      border-radius: 50%;
+      touch-action: none;
+      position: absolute;
+      top: calc(50% - 15px); /* Start in der Mitte */
+    }
+    
+
+.game_UI_dot {
+      width: 20px;
+      height: 20px;
+      background-color: gray;     /* Füllfarbe */
+      border: 5px solid white;/* Ring-Farbe und -Dicke */
+      border-radius: 50%;          /* macht's rund */
+}
+
+.game_UI_dot:hover {
+      width: 23px;
+      height: 23px;
+      background-color: white;     /* Füllfarbe */
+      border: 5px solid gray;/* Ring-Farbe und -Dicke */
+}
+
+.game_UI_dot_perfect {
+      width: 20px;
+      height: 20px;
+      background-color: gold;     /* Füllfarbe */
+      border: 5px solid white;/* Ring-Farbe und -Dicke */
+      border-radius: 50%;
+}
+.game_UI_dot_perfect:hover {
+      width: 23px;
+      height: 23px;
+      background-color: white;     /* Füllfarbe */
+      border: 5px solid gold;/* Ring-Farbe und -Dicke */
+}
   </style>
 </head>
 <body>
@@ -172,11 +239,66 @@ nav i:hover {
     </header>
   </div>
 
+
+
+
+
   <div id="settings_UI" class="ui-section">
     <h2>Settings</h2>
-    <p>Volume</p>
-    <input type="range" min="1" max="100" value="50" class="slider">
+    <div class="container">
+        
+    <h3>Volume</h3>
+    <div style="display: grid;">
+       <p>Master (in %)</p>
+       <input type="range" min="1" max="100" value="100" class="">
+    </div>
+    <br>
+    <div style="display: grid;">
+       <p>Effects (in %)</p>
+       <input type="range" min="1" max="100" value="100" class="">
+    </div>
+    <br>
+    <br>
+    <h3>Control</h3>
+    <div style="display: grid;">
+        <p>Mous sensitivity (in %)</p>
+       <input type="range" min="50" max="150" value="100" class="">
+    </div>
+    <br>
+    <br>
+    <h3>Gameplay and Graphics</h3>
+    <div style="display: grid;">
+       <p>Mous sensitivity (in %)</p>
+       <input type="range" min="50" max="150" value="100" class="">
+    </div>
+    <br>
+    <div style="display: flex;">
+       <p>Allow Fullscreen (as Boolean)</p>
+       <input type="checkbox" id="toggle_fullscreen">
+    </div>
+    <br>
+    <br>
+    </div>
   </div>
+  
+  <script why="Settings ändern und laden">
+      const toggle_fullscreen = document.getElementById('toggle_fullscreen');
+      
+      document.addEventListener('DOMContentLoaded', () => {
+      toggle_fullscreen.value = localStorage.getItem("toggle_fullscreen");
+      });
+      
+      toggle_fullscreen.addEventListener('change', () => {
+      console.log(toggle_fullscreen.value);
+      localStorage.setItem("toggle_fullscreen", toggle_fullscreen.value);
+  });
+  </script>
+  
+  
+  
+  
+  
+  
 
   <div id="howto_UI" class="ui-section">
   <h2>How to Play</h2>
@@ -285,6 +407,11 @@ nav i:hover {
   <div id="game_UI" class="ui-section">
     <h2>Game Screen</h2>
     <p>Game will appear here.</p>
+    <div class="game_UI_dot_perfect" tooltip="Perfect"></div>
+    <div class="game_UI_dot" tooltip="good"></div>
+    <div class="leiste" id="leiste">
+       <div class="griff" id="griff"></div>
+     </div>
   </div>
 
   <div class="footer">
@@ -296,6 +423,11 @@ nav i:hover {
   <script>
       const skinsMenu = document.getElementById("lobby_UI_skins");
       const skinsMenuDiv = document.getElementById("lobby_UI_skins_div");
+      const griff = document.getElementById('griff');
+      const leiste = document.getElementById('leiste');
+
+      let startY = 0;
+      let startTop = 0;
       
       const skins = [
     { name: "Brass", image: "skins/brass.png", desc: "The Default Trumpet."},
@@ -319,6 +451,52 @@ const songs = [
   { title: "Trumpet Hell", duration: "2:00", difficulty: "Impossible", file: "/songs/braucheeinpsychologe/trumpethell.json" }
 ];
 
+document.querySelectorAll("[tooltip]").forEach((el) => {
+  const text = el.getAttribute("tooltip");
+  el.removeAttribute("tooltip"); // optional, damit kein nativer title erscheint
+
+  const wrapper = document.createElement("span");
+  wrapper.classList.add("tooltip-wrapper");
+
+  const tooltip = document.createElement("span");
+  tooltip.classList.add("custom-tooltip", "fa-bounce");
+  tooltip.textContent = text;
+
+  // Computed Styles des Ursprungs-Elements holen
+  const style = window.getComputedStyle(el);
+  // Text- und Hintergrundfarbe übernehmen
+  tooltip.style.color = style.color;
+  tooltip.style.backgroundColor = style.backgroundColor;
+
+  // In den Wrapper einfügen
+  el.parentNode.insertBefore(wrapper, el);
+  wrapper.appendChild(el);
+  wrapper.appendChild(tooltip);
+});
+
+  griff.addEventListener('touchstart', function (e) {
+    startY = e.touches[0].clientY;
+    startTop = parseInt(getComputedStyle(griff).top);
+  });
+
+  griff.addEventListener('touchmove', function (e) {
+    e.preventDefault(); // Scroll verhindern
+
+    const deltaY = e.touches[0].clientY - startY;
+    let newTop = startTop + deltaY;
+
+    // Grenzen der Leiste berechnen
+    const leisteHeight = leiste.clientHeight;
+    const griffHeight = griff.clientHeight;
+    const maxTop = leisteHeight - griffHeight;
+    newTop = Math.max(0, Math.min(newTop, maxTop)); // Begrenzen
+
+    griff.style.top = `${newTop}px`;
+
+    // Optional: Ausgabe der Position (z. B. zur Steuerung)
+    const prozent = Math.round((newTop / maxTop) * 100);
+    console.log('Position Y %:', prozent);
+  }); 
 
     function displayUI(idToShow) {
       const sections = document.querySelectorAll('.ui-section');
@@ -492,7 +670,12 @@ function playGame() {
     const selectedSkin = localStorage.getItem("locker_picked_skin") || "Brass";
     const selectedChar = localStorage.getItem("locker_picked_character") || "Normal Guy";
     const selectedSong = localStorage.getItem("locker_picked_song") || "Song of Chaos";
-    
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+      console.error(`Vollbild konnte nicht aktiviert werden: ${err.message}`);
+    });
+    }
+    screen.orientation.lock('landscape');
     console.log(`Starte Spiel mit: ${selectedSkin}, ${selectedChar}, ${selectedSong}`);
     displayUI('game_UI');
 }
