@@ -1,0 +1,240 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background: #111;
+    color: white;
+    line-height: 1.4;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header,
+footer {
+    background: #222;
+    padding: 1rem;
+    text-align: center;
+}
+
+nav i {
+    margin: 0 10px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: white;
+    transition: color 0.2s;
+}
+
+nav i:hover {
+    color: #ccc;
+}
+
+.card,
+.container,
+.interactive {
+    border-radius: 15px;
+    border: 2px solid #404040b5;
+    padding: 10px;
+    margin: 10px;
+    background-color: #1e1e1e;
+    color: white;
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+.card,
+.interactive {
+    cursor: pointer;
+}
+
+.card:hover,
+.interactive:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 10px #ffffff1a;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 10px;
+}
+
+.ui-section {
+    display: none;
+    padding: 1rem;
+}
+
+.ui-section.active {
+    display: block !important;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Neue Styles für die Locker-Items */
+.locker-item {
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    background: #2a2a2a;
+    border: 2px solid #404040;
+    transition: all 0.3s ease;
+}
+
+.locker-item:hover {
+    border-color: #666;
+    background: #333;
+}
+
+.locker-item.selected {
+    border-color: #4caf50;
+    background: #2d4a2d;
+}
+
+.locker-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.locker-item h3 {
+    margin: 10px 0 5px 0;
+    font-size: 1.1em;
+}
+
+.locker-item p {
+    font-size: 0.9em;
+    color: #ccc;
+    margin: 5px 0;
+}
+
+.locker-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.song-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.difficulty {
+    padding: 3px 8px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.difficulty.easy {
+    background: #4caf50;
+}
+.difficulty.medium {
+    background: #ff9800;
+}
+.difficulty.hard {
+    background: #f44336;
+}
+.difficulty.impossible {
+    background: #9c27b0;
+}
+
+.tooltip-wrapper {
+    position: relative;
+    display: block;
+}
+
+.tooltip-wrapper .custom-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    background-color: gray;
+    color: #fff;
+    text-align: center;
+    font-size: 0.8em;
+    border-radius: 15px;
+    padding: 5px 10px;
+    position: absolute;
+    bottom: 105%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 1000;
+    transition: opacity 0.3s;
+}
+
+.tooltip-wrapper:hover .custom-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.DragBar {
+    position: fixed;
+    left: 10px; /* kann angepasst werden */
+    top: 20%;
+    width: 40px;
+    height: 60%;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.DragBarHandle {
+    width: 30px;
+    height: 30px;
+    background-color: #ffcc00;
+    border-radius: 50%;
+    touch-action: none;
+    position: absolute;
+    top: calc(50% - 15px); /* Start in der Mitte */
+}
+
+.game_UI {
+    user-select: none;
+    cursor: none;
+    flex: 1;
+    flex-direction: column;
+}
+
+.game_UI_dot {
+    width: 20px;
+    height: 20px;
+    background-color: gray; /* Füllfarbe */
+    border: 5px solid white; /* Ring-Farbe und -Dicke */
+    border-radius: 50%; /* macht's rund */
+}
+
+.game_UI_dot:hover {
+    width: 23px;
+    height: 23px;
+    background-color: white; /* Füllfarbe */
+    border: 5px solid gray; /* Ring-Farbe und -Dicke */
+}
+
+.game_UI_dot_perfect {
+    width: 20px;
+    height: 20px;
+    background-color: gold; /* Füllfarbe */
+    border: 5px solid white; /* Ring-Farbe und -Dicke */
+    border-radius: 50%;
+}
+.game_UI_dot_perfect:hover {
+    width: 23px;
+    height: 23px;
+    background-color: white; /* Füllfarbe */
+    border: 5px solid gold; /* Ring-Farbe und -Dicke */
+}
