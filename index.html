@@ -1,691 +1,300 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trumpet Chaos</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
-  <style>
-    * {
-  margin: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: sans-serif;
-  background: #111;
-  color: white;
-  line-height: 1.4;
-}
-
-header, footer {
-  background: #222;
-  padding: 1rem;
-  text-align: center;
-}
-
-nav i {
-  margin: 0 10px;
-  cursor: pointer;
-  font-size: 1.5rem;
-  color: white;
-  transition: color 0.2s;
-}
-
-nav i:hover {
-  color: #ccc;
-}
-
-.card, .container, .interactive {
-  border-radius: 15px;
-  border: 2px solid #404040b5;
-  padding: 10px;
-  margin: 10px;
-  background-color: #1e1e1e;
-  color: white;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card, .interactive {
-  cursor: pointer;
-}
-
-.card:hover, .interactive:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 10px #ffffff1a;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 15px;
-  padding: 10px;
-}
-
-.ui-section {
-  display: none;
-  padding: 1rem;
-}
-
-.ui-section.active {
-  display: block !important;
-}
-
-.hidden {
-  display: none;
-}
-
-/* Neue Styles für die Locker-Items */
-.locker-item {
-  text-align: center;
-  padding: 15px;
-  border-radius: 10px;
-  background: #2a2a2a;
-  border: 2px solid #404040;
-  transition: all 0.3s ease;
-}
-
-.locker-item:hover {
-  border-color: #666;
-  background: #333;
-}
-
-.locker-item.selected {
-  border-color: #4CAF50;
-  background: #2d4a2d;
-}
-
-.locker-item img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-.locker-item h3 {
-  margin: 10px 0 5px 0;
-  font-size: 1.1em;
-}
-
-.locker-item p {
-  font-size: 0.9em;
-  color: #ccc;
-  margin: 5px 0;
-}
-
-.locker-controls {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-
-.song-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.difficulty {
-  padding: 3px 8px;
-  border-radius: 15px;
-  font-size: 0.8em;
-  font-weight: bold;
-}
-
-.difficulty.easy { background: #4CAF50; }
-.difficulty.medium { background: #FF9800; }
-.difficulty.hard { background: #F44336; }
-.difficulty.impossible { background: #9C27B0; }
-
-.tooltip-wrapper {
-    position: relative;
-    display: block;
-}
-
-.tooltip-wrapper .custom-tooltip {
-    visibility: hidden;
-    opacity: 0;
-    background-color: gray;
-    color: #fff;
-    text-align: center;
-    font-size: 0.8em;
-    border-radius: 15px;
-    padding: 5px 10px;
-    position: absolute;
-    bottom: 105%;
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    z-index: 1000;
-    transition: opacity 0.3s;
-}
-
-.tooltip-wrapper:hover .custom-tooltip {
-    visibility: visible;
-    opacity: 1;
-}
-
-.leiste {
-      position: fixed;
-      left: 10px; /* kann angepasst werden */
-      top: 20%;
-      width: 40px;
-      height: 60%;
-      background-color: rgba(255, 255, 255, 0.2);
-      border-radius: 20px;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .griff {
-      width: 30px;
-      height: 30px;
-      background-color: #ffcc00;
-      border-radius: 50%;
-      touch-action: none;
-      position: absolute;
-      top: calc(50% - 15px); /* Start in der Mitte */
-    }
-    
-
-.game_UI_dot {
-      width: 20px;
-      height: 20px;
-      background-color: gray;     /* Füllfarbe */
-      border: 5px solid white;/* Ring-Farbe und -Dicke */
-      border-radius: 50%;          /* macht's rund */
-}
-
-.game_UI_dot:hover {
-      width: 23px;
-      height: 23px;
-      background-color: white;     /* Füllfarbe */
-      border: 5px solid gray;/* Ring-Farbe und -Dicke */
-}
-
-.game_UI_dot_perfect {
-      width: 20px;
-      height: 20px;
-      background-color: gold;     /* Füllfarbe */
-      border: 5px solid white;/* Ring-Farbe und -Dicke */
-      border-radius: 50%;
-}
-.game_UI_dot_perfect:hover {
-      width: 23px;
-      height: 23px;
-      background-color: white;     /* Füllfarbe */
-      border: 5px solid gold;/* Ring-Farbe und -Dicke */
-}
-  </style>
-</head>
-<body>
-
-  <div class="header">
-    <header>
-      <h1>Trumpet Chaos</h1>
-      <nav>
-        <i class="fa-solid fa-house" onclick="displayUI('lobby_UI');"></i>
-        <i class="fa-solid fa-circle-play" onClick="playGame();"></i>
-        <i class="fa-solid fa-question" onclick="displayUI('howto_UI');"></i>
-        <i class="fa-solid fa-info" onclick="displayUI('info_UI');"></i>
-        <i class="fa-solid fa-gear" onclick="displayUI('settings_UI');"></i>
-      </nav>
-    </header>
-  </div>
-
-
-
-
-
-  <div id="settings_UI" class="ui-section">
-    <h2>Settings</h2>
-    <div class="container">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Trumpet Chaos</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css" />
+         <link rel="stylesheet" href="styles.css" />
         
-    <h3>Volume</h3>
-    <div style="display: grid;">
-       <p>Master (in %)</p>
-       <input type="range" min="1" max="100" value="100" class="">
-    </div>
-    <br>
-    <div style="display: grid;">
-       <p>Effects (in %)</p>
-       <input type="range" min="1" max="100" value="100" class="">
-    </div>
-    <br>
-    <br>
-    <h3>Control</h3>
-    <div style="display: grid;">
-        <p>Mous sensitivity (in %)</p>
-       <input type="range" min="50" max="150" value="100" class="">
-    </div>
-    <br>
-    <br>
-    <h3>Gameplay and Graphics</h3>
-    <div style="display: grid;">
-       <p>Mous sensitivity (in %)</p>
-       <input type="range" min="50" max="150" value="100" class="">
-    </div>
-    <br>
-    <div style="display: flex;">
-       <p>Allow Fullscreen (as Boolean)</p>
-       <input type="checkbox" id="toggle_fullscreen">
-    </div>
-    <br>
-    <br>
-    </div>
-  </div>
-  
-  <script why="Settings ändern und laden">
-      const toggle_fullscreen = document.getElementById('toggle_fullscreen');
-      
-      document.addEventListener('DOMContentLoaded', () => {
-      toggle_fullscreen.value = localStorage.getItem("toggle_fullscreen");
-      });
-      
-      toggle_fullscreen.addEventListener('change', () => {
-      console.log(toggle_fullscreen.value);
-      localStorage.setItem("toggle_fullscreen", toggle_fullscreen.value);
-  });
-  </script>
-  
-  
-  
-  
-  
-  
+    </head>
+    <body>
+        <div class="header" id="header">
+            <header>
+                <h1>Trumpet Chaos</h1>
+                <nav>
+                    <i class="fa-solid fa-house" onclick="displayUI('lobby_UI');"></i>
+                    <i class="fa-solid fa-circle-play" onClick="playGame();"></i>
+                    <i class="fa-solid fa-question" onclick="displayUI('howto_UI');"></i>
+                    <i class="fa-solid fa-info" onclick="displayUI('info_UI');"></i>
+                    <i class="fa-solid fa-gear" onclick="displayUI('settings_UI');"></i>
+                </nav>
+            </header>
+        </div>
 
-  <div id="howto_UI" class="ui-section">
-  <h2>How to Play</h2>
-  
-  <div class="container">
-    <h3><i class="fas fa-music"></i> The Basics</h3>
-    <p>Trumpet Chaos is a rhythm game where you control the pitch of your trumpet by moving your mouse up and down while notes scroll across the screen. Your goal is to match the pitch and timing of each note as accurately as possible!</p>
-    <br>
-    <h3><i class="fas fa-gamepad"></i> Controls</h3>
-    <p><strong>Mouse Movement:</strong> Move your mouse up and down to control the pitch of your trumpet</p>
-    <p><strong>Click/Space:</strong> Blow your trumpet to play notes</p>
-    <p><strong>Hold:</strong> Keep holding for sustained notes</p>
-    <br>
-    <h3><i class="fas fa-play-circle"></i> Gameplay</h3>
-    <p>Notes will scroll from right to left across your screen. Each note shows you:</p>
-    <ul style="margin-left: 20px; margin-top: 10px;">
-      <li><strong>Pitch:</strong> How high or low to position your mouse</li>
-      <li><strong>Timing:</strong> When to start and stop blowing</li>
-      <li><strong>Duration:</strong> How long to hold the note</li>
-    </ul>
-    <br>
-    <h3><i class="fas fa-trophy"></i> Scoring</h3>
-    <p>You'll be rated on your <strong>pitch accuracy</strong> and <strong>timing precision</strong>. Perfect notes give you the most points, while missed or poorly timed notes will lower your score. Don't worry about being perfect - even professional trumpet players sound terrible sometimes!</p>
-    <br>
-    <h3><i class="fas fa-lightbulb"></i> Tips for Success</h3>
-    <p><strong><i class="fas fa-arrow-right"></i> Start Easy:</strong> Begin with slower songs to get the hang of mouse control</p>
-    <p><strong><i class="fas fa-arrow-right"></i> Watch Ahead:</strong> Keep your eyes on upcoming notes, not just the current one</p>
-    <p><strong><i class="fas fa-arrow-right"></i> Stay Smooth:</strong> Smooth mouse movements sound better than jerky ones</p>
-    <p><strong><i class="fas fa-arrow-right"></i> Don't Panic:</strong> Missing a few notes won't ruin your performance</p>
-    <br>
-    <h3><i class="fas fa-masks-theater"></i> Embrace the Chaos</h3>
-    <p>Remember: this game is about having fun with music! Whether you sound like a professional musician or a dying goose, you're doing it right. The beauty of Trumpet Chaos is that even the worst performances can be hilariously entertaining.</p>
-    <br>
-    <p style="text-align: center; font-style: italic; margin-top: 20px;">
-      <i class="fas fa-wind"></i> Blow stuff. Don't die. Profit. <i class="fas fa-wind"></i>
-    </p>
-  </div>
-  </div>
+        <div id="settings_UI" class="ui-section">
+        <h2>Settings</h2>
+        <div class="container">
+                <h3>Volume</h3>
+                <div style="display: grid">
+                    <p>Master (in %)</p>
+                    <input type="range" min="1" max="100" value="100" id="range_volmaster" />
+                </div>
+                <br />
+                <div style="display: grid">
+                    <p>Effects (in %)</p>
+                    <input type="range" min="1" max="100" value="100" id="range_voleffect" />
+                </div>
+                <br />
+                <br />
+                <h3>Control</h3>
+                <div style="display: grid">
+                    <p>Mous sensitivity (in %)</p>
+                    <input type="range" min="50" max="150" value="100" id="range_ctrlmousesense" />
+                </div>
+                <br />
+                <br />
+                <h3>Gameplay and Graphics</h3>
+                <div style="display: flex">
+                    <p>Allow Fullscreen</p>
+                    <input type="checkbox" id="toggle_fullscreen" />
+                </div>
+                <br>
+                <div style="display: grid">
+                    <p>Tickspeed (Default 500)</p>
+                    <h6>How often should the Game Check if you hit the Notes in miliseconds.</h6>
+                    <input type="number" id="numb_gametickspeed" value="500" />
+                </div>
+                <br />
+                <br />
+                <h3>Data</h3>
+                <div style="display: grid">
+                    <p>Export Data</p>
+                    <button class="interactive" id="exportSettings">Export</button>
+                </div>
+                <div style="display: grid">
+                    <p>Import Data</p>
+                    <button class="interactive" id="importSettings">Import</button>
+                </div>
+                <div style="display: grid">
+                    <p>Delete Data</p>
+                    <button onClick="localStorage.clear()" class="interactive">Delete</button>
+                </div>
+        </div>
+        </div>
 
-  <div id="info_UI" class="ui-section">
-  <h2>About Trumpet Chaos</h2>
-  
-  <div class="container">
-    <h3><i class="fas fa-music"></i> What is Trumpet Chaos?</h3>
-    <p>Trumpet Chaos is a free-to-play, browser-based musical rhythm game inspired by the chaotic joy of playing wind instruments. Like Trombone Champ, it combines precise musical gameplay with the inherent hilarity of trying to play a brass instrument.</p>
-    <br>
-    <h3><i class="fas fa-gamepad"></i> Game Features</h3>
-    <p><strong><i class="fas fa-user"></i> Multiple Characters:</strong> Choose from different trumpet players, each with their own personality</p>
-    <p><strong><i class="fas fa-palette"></i> Custom Skins:</strong> Unlock and equip different trumpet designs</p>
-    <p><strong><i class="fas fa-list-music"></i> Song Library:</strong> Play through various songs with different difficulty levels</p>
-    <p><strong><i class="fas fa-mouse"></i> Mouse Control:</strong> Intuitive pitch control using mouse movement</p>
-    <p><strong><i class="fas fa-globe"></i> Browser-Based:</strong> No downloads required - play instantly in your web browser</p>
-    <br>
-    <h3><i class="fas fa-heart"></i> The Philosophy</h3>
-    <p>Music games are often too serious. Trumpet Chaos embraces the fact that wind instruments can sound absolutely ridiculous, and that's perfectly fine! Whether you nail every note or create beautiful chaos, you're making music.</p>
-    <br>
-    <h3><i class="fas fa-desktop"></i> Technical Info</h3>
-    <p><strong>Platform:</strong> Web Browser (Chrome, Firefox, Safari, Edge)</p>
-    <p><strong>Requirements:</strong> Mouse, speakers/headphones, sense of humor</p>
-    <p><strong>Cost:</strong> Completely free</p>
-    <p><strong>Storage:</strong> Uses browser local storage for settings and progress</p>
-    <br>
-    <h3><i class="fas fa-code"></i> Development</h3>
-    <p>Trumpet Chaos is developed with love, coffee, and the occasional frustrated trumpet noise. Built using vanilla HTML, CSS, and JavaScript to keep things simple and accessible.</p>
-    <br>
-    <div style="text-align: center; margin-top: 20px; padding: 15px; background: #333; border-radius: 10px;">
-      <p style="font-style: italic; margin-bottom: 10px;">
-        <i class="fas fa-quote-left"></i> In a world full of perfect pitch, be the trumpet that plays with heart. <i class="fas fa-quote-right"></i>
-      </p>
-      <p><i class="fas fa-wind"></i> Blow it like nobody's listening! <i class="fas fa-wind"></i></p>
-    </div>
-  </div>
-  </div>
-  
-  <div id="lobby_UI" class="ui-section active">
-  <h2>Welcome to Trumpet Chaos</h2>
-  <p>Select a mode and blow your trumpet!</p>
-  <div class="container" id="locker">
-    <h3>Locker</h3>
-    <div class="locker-controls">
-      <button class="interactive" onClick="ToggleMenu('skins')">Skins</button>  
-      <button class="interactive" onClick="ToggleMenu('character')">Characters</button>  
-      <button class="interactive" onClick="ToggleMenu('songs')">Songs</button>
-    </div>
-    
-    <div id="lobby_UI_skins" class="hidden grid-container">
-      <div id="lobby_UI_skins_div"></div>
-    </div>  
-    
-    <div id="lobby_UI_character" class="hidden grid-container">
-      <div id="lobby_UI_character_div"></div>
-    </div>  
-    
-    <div id="lobby_UI_songs" class="hidden grid-container">
-      <div id="lobby_UI_songs_div"></div>
-    </div>
-    
-    <div class="locker-controls">
-      <button id="lobby_UI_control_play" onClick="playGame()" class="interactive">Play</button>
-    </div>
-  </div>
-  </div>
+        <script wo-für="Settings ändern und laden">
+    const toggle_fullscreen = document.getElementById("toggle_fullscreen");
+    const range_vollmaster = document.getElementById("range_volmaster");
+    const range_voleffect = document.getElementById("range_voleffect");
+    const range_ctrlmousesense = document.getElementById("range_ctrlmousesense");
+    const numb_gametickspeed = document.getElementById("numb_gametickspeed");
 
-  
-
-  <div id="game_UI" class="ui-section">
-    <h2>Game Screen</h2>
-    <p>Game will appear here.</p>
-    <div class="game_UI_dot_perfect" tooltip="Perfect"></div>
-    <div class="game_UI_dot" tooltip="good"></div>
-    <div class="leiste" id="leiste">
-       <div class="griff" id="griff"></div>
-     </div>
-  </div>
-
-  <div class="footer">
-    <footer>
-        Trumpet Chaos by <a href="https://github.com/BraucheeinPsychologe/Trumpet-Chaos-Blow-it-like-nobody-s-listening-/tree/main" target="_blank">braucheeinpsychologe</a>
-    </footer>
-  </div>
-
-  <script>
-      const skinsMenu = document.getElementById("lobby_UI_skins");
-      const skinsMenuDiv = document.getElementById("lobby_UI_skins_div");
-      const griff = document.getElementById('griff');
-      const leiste = document.getElementById('leiste');
-
-      let startY = 0;
-      let startTop = 0;
-      
-      const skins = [
-    { name: "Brass", image: "skins/brass.png", desc: "The Default Trumpet."},
-    { name: "Copper", image: "skins/copper.png", desc: "Like the Default one but better."},
-    { name: "Gold", image: "skins/gold.png", desc: "You have done well." },
-    { name: "Cardboard", image: "skins/cardboard.png", desc: "I hope it dosn't rain today." },
-    { name: "Wood", image: "skins/wood.png", desc: "How? just How." },
-    { name: "Whistle", image: "skins/whistle.png", desc: "Tight Budget, huh?" }
-    ];
-    
-    const characters = [
-  { name: "Normal Guy", image: "char/normguy.png", desc: "Just a normal guy with a trumpet." },
-  { name: "Sad Guy", image: "char/unhappy.png", desc: "He plays jazz... badly." },
-  { name: "Another Guy", image: "char/another.png", desc: "He know what he is doing." },
-  { name: "Invisible Guy", image: "char/invis.png", desc: "Nobody knows why he is invisible. Wait, why is his glasses not invisble?" }
-];
-
-const songs = [
-  { title: "Song of Chaos", duration: "1:20", difficulty: "Hard", file: "/songs/braucheeinpsychologe/sogofchaos.json" },
-  { title: "Silent Blow", duration: "0:45", difficulty: "Easy", file: "/songs/braucheeinpsychologe/silentblow.json" },
-  { title: "Trumpet Hell", duration: "2:00", difficulty: "Impossible", file: "/songs/braucheeinpsychologe/trumpethell.json" }
-];
-
-document.querySelectorAll("[tooltip]").forEach((el) => {
-  const text = el.getAttribute("tooltip");
-  el.removeAttribute("tooltip"); // optional, damit kein nativer title erscheint
-
-  const wrapper = document.createElement("span");
-  wrapper.classList.add("tooltip-wrapper");
-
-  const tooltip = document.createElement("span");
-  tooltip.classList.add("custom-tooltip", "fa-bounce");
-  tooltip.textContent = text;
-
-  // Computed Styles des Ursprungs-Elements holen
-  const style = window.getComputedStyle(el);
-  // Text- und Hintergrundfarbe übernehmen
-  tooltip.style.color = style.color;
-  tooltip.style.backgroundColor = style.backgroundColor;
-
-  // In den Wrapper einfügen
-  el.parentNode.insertBefore(wrapper, el);
-  wrapper.appendChild(el);
-  wrapper.appendChild(tooltip);
-});
-
-  griff.addEventListener('touchstart', function (e) {
-    startY = e.touches[0].clientY;
-    startTop = parseInt(getComputedStyle(griff).top);
-  });
-
-  griff.addEventListener('touchmove', function (e) {
-    e.preventDefault(); // Scroll verhindern
-
-    const deltaY = e.touches[0].clientY - startY;
-    let newTop = startTop + deltaY;
-
-    // Grenzen der Leiste berechnen
-    const leisteHeight = leiste.clientHeight;
-    const griffHeight = griff.clientHeight;
-    const maxTop = leisteHeight - griffHeight;
-    newTop = Math.max(0, Math.min(newTop, maxTop)); // Begrenzen
-
-    griff.style.top = `${newTop}px`;
-
-    // Optional: Ausgabe der Position (z. B. zur Steuerung)
-    const prozent = Math.round((newTop / maxTop) * 100);
-    console.log('Position Y %:', prozent);
-  }); 
-
-    function displayUI(idToShow) {
-      const sections = document.querySelectorAll('.ui-section');
-      sections.forEach(sec => sec.classList.remove('active'));
-      const el = document.getElementById(idToShow);
-      if (el) el.classList.add('active');
-    }
-    
-    function ChangeSkinMenu(OpenClose) {
-    if (OpenClose === "open") {
-        skinsMenu.classList.remove('hidden');
-        skinsMenu.classList.add('active');
-        DisplaySkins();
-    } else if (OpenClose === "close") {
-        skinsMenu.classList.remove('active');
-        skinsMenu.classList.add('hidden');
-    }
-}
-
-function ToggleSkinMenu() {
-    if (skinsMenu.classList.contains("active")) {
-        ChangeSkinMenu("close");
-    } else {
-        ChangeSkinMenu("open");
-    }
-}
-
-function DisplaySkins() {
-    const skinsMenuDiv = document.getElementById("lobby_UI_skins_div");
-    skinsMenuDiv.innerHTML = "";
-
-    skins.forEach(skin => {
-        const skinContainer = document.createElement("div");
-        skinContainer.classList.add("locker-item");
-              
-        const img = document.createElement("img");
-        img.src = skin.image;
-        img.alt = skin.name;
-
-        const nameLabel = document.createElement("h3");
-        nameLabel.textContent = skin.name;
+    document.addEventListener("DOMContentLoaded", () => {
+        const savedValue_toggle_fullscreen = localStorage.getItem("toggle_fullscreen");
+        const savedValue_range_volmaster = localStorage.getItem("range_volmaster");
+        const savedValue_range_voleffect = localStorage.getItem("range_voleffect");
+        const savedValue_range_ctrlmousesense = localStorage.getItem("range_ctrlmousesense");
+        const savedValue_numb_gametickspeed = localStorage.getItem("numb_gametickspeed");
         
-        const descPargh = document.createElement("p");
-        descPargh.textContent = skin.desc;
-
-        skinContainer.appendChild(img);
-        skinContainer.appendChild(nameLabel);
-        skinContainer.appendChild(descPargh);
-
-        skinContainer.addEventListener("click", () => {
-            console.log(`Skin gewählt: ${skin.name}`);
-            localStorage.setItem("locker_picked_skin", skin.name);
-            
-            // Alle anderen Skins deselektieren
-            document.querySelectorAll("#lobby_UI_skins_div .locker-item").forEach(item => {
-                item.classList.remove("selected");
-            });
-            
-            // Aktuelle Auswahl markieren
-            skinContainer.classList.add("selected");
-        });
-
-        skinsMenuDiv.appendChild(skinContainer);
+        toggle_fullscreen.checked = savedValue_toggle_fullscreen === "true";
+        range_volmaster.value = savedValue_range_volmaster;
+        range_voleffect.value = savedValue_range_voleffect;
+        range_ctrlmousesense.value = savedValue_range_ctrlmousesense;
+        numb_gametickspeed.value = savedValue_numb_gametickspeed;
+        
     });
-}
 
-function ToggleMenu(menuName) {
-    const menus = {
-        skins: document.getElementById("lobby_UI_skins"),
-        character: document.getElementById("lobby_UI_character"),
-        songs: document.getElementById("lobby_UI_songs")
-    };
-
-    // Alle Menüs verstecken
-    for (let key in menus) {
-        menus[key].classList.add("hidden");
-        menus[key].classList.remove("active");
-    }
-
-    // Aktuelles Menü einblenden
-    const selectedMenu = menus[menuName];
-    selectedMenu.classList.remove("hidden");
-    selectedMenu.classList.add("active");
-
-    // Inhalte anzeigen (z. B. Skins laden)
-    if (menuName === "skins") DisplaySkins();
-    if (menuName === "character") DisplayCharacters();
-    if (menuName === "songs") DisplaySongs();
-}
-
-function DisplayCharacters() {
-    const charDiv = document.getElementById("lobby_UI_character_div");
-    charDiv.innerHTML = "";
-
-    characters.forEach(char => {
-        const div = document.createElement("div");
-        div.classList.add("locker-item");
-
-        const img = document.createElement("img");
-        img.src = char.image;
-        img.alt = char.name;
-
-        const name = document.createElement("h3");
-        name.textContent = char.name;
-
-        const desc = document.createElement("p");
-        desc.textContent = char.desc;
-
-        div.appendChild(img);
-        div.appendChild(name);
-        div.appendChild(desc);
-
-        div.addEventListener("click", () => {
-            console.log(`Charakter gewählt: ${char.name}`);  
-            localStorage.setItem("locker_picked_character", char.name);
-            
-            document.querySelectorAll("#lobby_UI_character_div .locker-item").forEach(item => {
-                item.classList.remove("selected");
-            });
-            
-            div.classList.add("selected");
-        });
-
-        charDiv.appendChild(div);
+    toggle_fullscreen.addEventListener("change", () => {
+        localStorage.setItem("toggle_fullscreen", toggle_fullscreen.checked);
     });
-}
+
+    range_volmaster.addEventListener("change", () => {
+        localStorage.setItem("range_volmaster", range_volmaster.value);
+    });
+
+    range_voleffect.addEventListener("change", () => {
+        localStorage.setItem("range_voleffect", range_voleffect.value);
+    });
+
+    range_voleffect.addEventListener("change", () => {
+        localStorage.setItem("range_ctrlmousesense", range_ctrlmousesense.value);
+    });
+
+    numb_gametickspeed.addEventListener("change", () => {
+        localStorage.setItem("numb_gametickspeed", numb_gametickspeed.value);
+    });
     
-function DisplaySongs() {
-    const songsDiv = document.getElementById("lobby_UI_songs_div");
-    songsDiv.innerHTML = "";
+    
+</script>
 
-    songs.forEach(song => {
-        const div = document.createElement("div");
-        div.classList.add("locker-item");
+        <div id="howto_UI" class="ui-section">
+            <h2>How to Play</h2>
 
-        const title = document.createElement("h3");
-        title.textContent = song.title;
+            <div class="container">
+                <h3><i class="fas fa-music"></i> The Basics</h3>
+                <p>
+                    Trumpet Chaos is a rhythm game where you control the pitch of your trumpet by moving your mouse up
+                    and down while notes scroll across the screen. Your goal is to match the pitch and timing of each
+                    note as accurately as possible!
+                </p>
+                <br />
+                <h3><i class="fas fa-gamepad"></i> Controls</h3>
+                <p><strong>Mouse Movement:</strong> Move your mouse up and down to control the pitch of your trumpet</p>
+                <p><strong>Click/Space:</strong> Blow your trumpet to play notes</p>
+                <p><strong>Hold:</strong> Keep holding for sustained notes</p>
+                <br />
+                <h3><i class="fas fa-play-circle"></i> Gameplay</h3>
+                <p>Notes will scroll from right to left across your screen. Each note shows you:</p>
+                <ul style="margin-left: 20px; margin-top: 10px">
+                    <li><strong>Pitch:</strong> How high or low to position your mouse</li>
+                    <li><strong>Timing:</strong> When to start and stop blowing</li>
+                    <li><strong>Duration:</strong> How long to hold the note</li>
+                </ul>
+                <br />
+                <h3><i class="fas fa-trophy"></i> Scoring</h3>
+                <p>
+                    You'll be rated on your <strong>pitch accuracy</strong> and <strong>timing precision</strong>.
+                    Perfect notes give you the most points, while missed or poorly timed notes will lower your score.
+                    Don't worry about being perfect - even professional trumpet players sound terrible sometimes!
+                </p>
+                <br />
+                <h3><i class="fas fa-lightbulb"></i> Tips for Success</h3>
+                <p>
+                    <strong><i class="fas fa-arrow-right"></i> Start Easy:</strong> Begin with slower songs to get the
+                    hang of mouse control
+                </p>
+                <p>
+                    <strong><i class="fas fa-arrow-right"></i> Watch Ahead:</strong> Keep your eyes on upcoming notes,
+                    not just the current one
+                </p>
+                <p>
+                    <strong><i class="fas fa-arrow-right"></i> Stay Smooth:</strong> Smooth mouse movements sound better
+                    than jerky ones
+                </p>
+                <p>
+                    <strong><i class="fas fa-arrow-right"></i> Don't Panic:</strong> Missing a few notes won't ruin your
+                    performance
+                </p>
+                <br />
+                <h3><i class="fas fa-masks-theater"></i> Embrace the Chaos</h3>
+                <p>
+                    Remember: this game is about having fun with music! Whether you sound like a professional musician
+                    or a dying goose, you're doing it right. The beauty of Trumpet Chaos is that even the worst
+                    performances can be hilariously entertaining.
+                </p>
+                <br />
+                <p style="text-align: center; font-style: italic; margin-top: 20px">
+                    <i class="fas fa-wind"></i> Blow stuff. Don't die. Profit. <i class="fas fa-wind"></i>
+                </p>
+            </div>
+        </div>
 
-        const songInfo = document.createElement("div");
-        songInfo.classList.add("song-info");
+        <div id="info_UI" class="ui-section">
+            <h2>About Trumpet Chaos</h2>
 
-        const duration = document.createElement("span");
-        duration.textContent = `⏱ ${song.duration}`;
+            <div class="container">
+                <h3><i class="fas fa-music"></i> What is Trumpet Chaos?</h3>
+                <p>
+                    Trumpet Chaos is a free-to-play, browser-based musical rhythm game inspired by the chaotic joy of
+                    playing wind instruments. Like Trombone Champ, it combines precise musical gameplay with the
+                    inherent hilarity of trying to play a brass instrument.
+                </p>
+                <br />
+                <h3><i class="fas fa-gamepad"></i> Game Features</h3>
+                <p>
+                    <strong><i class="fas fa-user"></i> Multiple Characters:</strong> Choose from different trumpet
+                    players, each with their own personality
+                </p>
+                <p>
+                    <strong><i class="fas fa-palette"></i> Custom Skins:</strong> Unlock and equip different trumpet
+                    designs
+                </p>
+                <p>
+                    <strong><i class="fas fa-list-music"></i> Song Library:</strong> Play through various songs with
+                    different difficulty levels
+                </p>
+                <p>
+                    <strong><i class="fas fa-mouse"></i> Mouse Control:</strong> Intuitive pitch control using mouse
+                    movement
+                </p>
+                <p>
+                    <strong><i class="fas fa-globe"></i> Browser-Based:</strong> No downloads required - play instantly
+                    in your web browser
+                </p>
+                <br />
+                <h3><i class="fas fa-heart"></i> The Philosophy</h3>
+                <p>
+                    Music games are often too serious. Trumpet Chaos embraces the fact that wind instruments can sound
+                    absolutely ridiculous, and that's perfectly fine! Whether you nail every note or create beautiful
+                    chaos, you're making music.
+                </p>
+                <br />
+                <h3><i class="fas fa-desktop"></i> Technical Info</h3>
+                <p><strong>Platform:</strong> Web Browser (Chrome, Firefox, Safari, Edge)</p>
+                <p><strong>Requirements:</strong> Mouse, speakers/headphones, Multicore CPU and sense of humor</p>
+                <p><strong>Cost:</strong> Completely free</p>
+                <p><strong>Storage:</strong> Uses browser local storage for settings and progress</p>
+                <br />
+                <h3><i class="fas fa-code"></i> Development</h3>
+                <p>
+                    Trumpet Chaos is developed with love, coffee, and the occasional frustrated trumpet noise. Built
+                    using vanilla HTML, CSS, and JavaScript to keep things simple and accessible.
+                </p>
+                <br />
+                <div style="text-align: center; margin-top: 20px; padding: 15px; background: #333; border-radius: 10px">
+                    <p style="font-style: italic; margin-bottom: 10px">
+                        <i class="fas fa-quote-left"></i> In a world full of perfect pitch, be the trumpet that plays
+                        with heart. <i class="fas fa-quote-right"></i>
+                    </p>
+                    <p><i class="fas fa-wind"></i> Blow it like nobody's listening! <i class="fas fa-wind"></i></p>
+                </div>
+            </div>
+        </div>
 
-        const difficulty = document.createElement("span");
-        difficulty.classList.add("difficulty", getDifficultyClass(song.difficulty));
-        difficulty.textContent = song.difficulty;
+        <div id="lobby_UI" class="ui-section active">
+            <h2>Welcome to Trumpet Chaos</h2>
+            <p>Select a mode and blow your trumpet!</p>
+            <div class="container" id="locker">
+                <h3>Locker</h3>
+                <div class="locker-controls">
+                    <button class="interactive" onClick="ToggleMenu('skins')">Skins</button>
+                    <button class="interactive" onClick="ToggleMenu('character')">Characters</button>
+                    <button class="interactive" onClick="ToggleMenu('songs')">Songs</button>
+                </div>
 
-        songInfo.appendChild(duration);
-        songInfo.appendChild(difficulty);
+                <div id="lobby_UI_skins" class="hidden grid-container">
+                    <div id="lobby_UI_skins_div"></div>
+                </div>
 
-        div.appendChild(title);
-        div.appendChild(songInfo);
+                <div id="lobby_UI_character" class="hidden grid-container">
+                    <div id="lobby_UI_character_div"></div>
+                </div>
 
-        div.addEventListener("click", () => {
-            console.log(`Song ausgewählt: ${song.title}`);
-            localStorage.setItem("locker_picked_song", song.title);
-            
-            document.querySelectorAll("#lobby_UI_songs_div .locker-item").forEach(item => {
-                item.classList.remove("selected");
-            });
-            
-            div.classList.add("selected");
-        });
+                <div id="lobby_UI_songs" class="hidden grid-container">
+                    <div id="lobby_UI_songs_div"></div>
+                </div>
 
-        songsDiv.appendChild(div);
-    });
-}
-    // Funktion für das Spiel starten
-function playGame() {
-    const selectedSkin = localStorage.getItem("locker_picked_skin") || "Brass";
-    const selectedChar = localStorage.getItem("locker_picked_character") || "Normal Guy";
-    const selectedSong = localStorage.getItem("locker_picked_song") || "Song of Chaos";
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-      console.error(`Vollbild konnte nicht aktiviert werden: ${err.message}`);
-    });
-    }
-    screen.orientation.lock('landscape');
-    console.log(`Starte Spiel mit: ${selectedSkin}, ${selectedChar}, ${selectedSong}`);
-    displayUI('game_UI');
-}
+                <div class="locker-controls">
+                    <button id="lobby_UI_control_play" onClick="playGame()" class="interactive">Play</button>
+                </div>
+            </div>
+        </div>
 
-// Hilfsfunktion für Schwierigkeitsgrad CSS-Klassen
-function getDifficultyClass(difficulty) {
-    return difficulty.toLowerCase().replace(' ', '');
-}
+        <div id="game_UI" class="ui-section game_UI">
+            <h2 id="GameTitle">Dont Blow it!</h2>
+            <div id="exitMenu" onclick="displayUI('lobby_UI');"><i class="fa-solid fa-right-from-bracket fa-2xl" style="color: #ff0000;"></i></div>
+            <div class="game_UI_dot_perfect" id="Note" tooltip="Perfect"></div>
+            <div class="game_UI_dot" tooltip="good"></div>
+                <div class="DragBar" id="DragBar">
+                    <div class="DragBarHandle" id="DragBarHandle"></div>
+                </div>
+            </div>
 
-  </script>
-
-</body>
+        <div class="footer" id="footer">
+            <footer>
+                Trumpet Chaos by
+                <a
+                    href="https://github.com/BraucheeinPsychologe/Trumpet-Chaos-Blow-it-like-nobody-s-listening-/tree/main"
+                    target="_blank"
+                    >braucheeinpsychologe</a
+                >
+            </footer>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+        <script>eruda.init();</script>
+        <script src="script.js"></script>
+    </body>
 </html>
