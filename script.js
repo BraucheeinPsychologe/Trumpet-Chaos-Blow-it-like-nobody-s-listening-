@@ -412,3 +412,38 @@ document.getElementById("importSettings").addEventListener("change", async (e) =
             alert("Fehler beim Import: " + err.message);
         }
     });
+    
+    
+      function confirmClearStorage() {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'All saved data will be permanently deleted!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        background: '#1e1e1e',
+        color: '#f0f0f0',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Clear localStorage
+          localStorage.clear();
+
+          // Optional: Feedback before reload
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'Your data has been cleared.',
+            icon: 'success',
+            background: '#1e1e1e',
+            color: '#f0f0f0',
+            timer: 1500,
+            showConfirmButton: false
+          }).then(() => {
+            // Refresh page
+            location.reload();
+          });
+        }
+      });
+      }
