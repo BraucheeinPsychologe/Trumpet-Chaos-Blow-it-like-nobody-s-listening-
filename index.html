@@ -37,6 +37,7 @@
                 <div style="display: grid">
                     <p>Effects (in %)</p>
                     <input type="range" min="1" max="100" value="100" id="range_voleffect" />
+                    <p id="range_voleffect_dsp">100%</p>
                 </div>
                 <br />
                 <br />
@@ -44,7 +45,8 @@
                 <div style="display: grid">
                     <p>Mous sensitivity (in %)</p>
                     <h6>Does not work on Touch!</h6>
-                    <input type="range" min="50" max="100" value="100" id="range_ctrlmousesense" />
+                    <input type="range" min="50" max="150" value="100" id="range_ctrlmousesense" />
+                    <p id="range_ctrlmousesense_dsp">100%</p>
                 </div>
                 <br />
                 <br />
@@ -94,8 +96,10 @@
     const range_volmaster_dsp = document.getElementById("range_volmaster_dsp");
     
     const range_voleffect = document.getElementById("range_voleffect");
+    const range_volleffect = document.getElementById("range_voleffect_dsp");
     
     const range_ctrlmousesense = document.getElementById("range_ctrlmousesense");
+    const range_ctrlmousesense_dsp = document.getElementById("range_ctrlmousesense_dsp");
     
     const numb_gametickspeed = document.getElementById("numb_gametickspeed");
 
@@ -104,12 +108,19 @@
         const savedValue_range_volmaster = localStorage.getItem("range_volmaster") || "100";
         const savedValue_range_voleffect = localStorage.getItem("range_voleffect") || "100";
         const savedValue_range_ctrlmousesense = localStorage.getItem("range_ctrlmousesense") || "100";
-        const savedValue_numb_gametickspeed = localStorage.getItem("numb_gametickspeed") || "500";
+        const savedValue_numb_gametickspeed = localStorage.getItem("numb_gametickspeed") || "300";
         
         toggle_fullscreen.checked = savedValue_toggle_fullscreen === "true";
+        
         range_volmaster.value = savedValue_range_volmaster;
+        range_volmaster_dsp.innerHTML = range_volmaster.value + "%";
+        
         range_voleffect.value = savedValue_range_voleffect;
+        range_voleffect_dsp.innerHTML = range_voleffect.value + "%";
+        
         range_ctrlmousesense.value = savedValue_range_ctrlmousesense;
+        range_ctrlmousesense_dsp.innerHTML = range_ctrlmousesense.value + "%";
+        
         numb_gametickspeed.value = savedValue_numb_gametickspeed;
         
     });
@@ -120,15 +131,17 @@
 
     range_volmaster.addEventListener("change", () => {
         localStorage.setItem("range_volmaster", range_volmaster.value);
-        range_volmaster_dsp.innerHTML = range_volmaster.value;
+        range_volmaster_dsp.innerHTML = range_volmaster.value + "%";
     });
 
     range_voleffect.addEventListener("change", () => {
         localStorage.setItem("range_voleffect", range_voleffect.value);
+        range_voleffect_dsp.innerHTML = range_voleffect.value + "%";
     });
 
-    range_voleffect.addEventListener("change", () => {
+    range_ctrlmousesense.addEventListener("change", () => {
         localStorage.setItem("range_ctrlmousesense", range_ctrlmousesense.value);
+        range_ctrlmousesense_dsp.innerHTML = range_ctrlmousesense.value + "%";
     });
 
     numb_gametickspeed.addEventListener("change", () => {
