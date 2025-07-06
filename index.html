@@ -31,6 +31,7 @@
                 <div style="display: grid">
                     <p>Master (in %)</p>
                     <input type="range" min="1" max="100" value="100" id="range_volmaster" />
+                    <p id="range_volmaster_dsp">100%</p>
                 </div>
                 <br />
                 <div style="display: grid">
@@ -42,20 +43,29 @@
                 <h3>Control</h3>
                 <div style="display: grid">
                     <p>Mous sensitivity (in %)</p>
-                    <input type="range" min="50" max="150" value="100" id="range_ctrlmousesense" />
+                    <h6>Does not work on Touch!</h6>
+                    <input type="range" min="50" max="100" value="100" id="range_ctrlmousesense" />
                 </div>
                 <br />
                 <br />
                 <h3>Gameplay and Graphics</h3>
-                <div style="display: flex">
+                <div style="display: grid">
                     <p>Allow Fullscreen</p>
+                    <h6>Should the Game us the entire Screen</h6>
                     <input type="checkbox" id="toggle_fullscreen" />
                 </div>
                 <br>
                 <div style="display: grid">
-                    <p>Tickspeed (Default 500)</p>
-                    <h6>How often should the Game Check if you hit the Notes in miliseconds.</h6>
-                    <input type="number" id="numb_gametickspeed" value="500" />
+                    <p>Tickspeed (in ms)</p>
+                    <h6>How often should the Game Check if you hit the Notes, in miliseconds.</h6>
+                    <input type="number" id="numb_gametickspeed" min="50" max="700" placeholder="500" list="numb_gametickspeed_list" />
+                    <datalist id="numb_gametickspeed_list">
+                        <option value="50">Very High</option>
+                        <option value="200">High</option>
+                        <option value="300">Default</option>
+                        <option value="500">Low</option>
+                        <option value="600">Very Low</option>
+                    </datalist>
                 </div>
                 <br />
                 <br />
@@ -70,16 +80,23 @@
                 </div>
                 <div style="display: grid">
                     <p>Delete Data</p>
-                    <button onClick="localStorage.clear()" class="interactive">Delete</button>
+                    <button onClick="confirmClearStorage()" class="interactive">Delete</button>
                 </div>
         </div>
+        <br>
+        <br>
         </div>
 
         <script wo-für="Settings ändern und laden">
     const toggle_fullscreen = document.getElementById("toggle_fullscreen");
+    
     const range_vollmaster = document.getElementById("range_volmaster");
+    const range_volmaster_dsp = document.getElementById("range_volmaster_dsp");
+    
     const range_voleffect = document.getElementById("range_voleffect");
+    
     const range_ctrlmousesense = document.getElementById("range_ctrlmousesense");
+    
     const numb_gametickspeed = document.getElementById("numb_gametickspeed");
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -103,6 +120,7 @@
 
     range_volmaster.addEventListener("change", () => {
         localStorage.setItem("range_volmaster", range_volmaster.value);
+        range_volmaster_dsp.innerHTML = range_volmaster.value;
     });
 
     range_voleffect.addEventListener("change", () => {
@@ -116,8 +134,6 @@
     numb_gametickspeed.addEventListener("change", () => {
         localStorage.setItem("numb_gametickspeed", numb_gametickspeed.value);
     });
-    
-    
 </script>
 
         <div id="howto_UI" class="ui-section">
@@ -293,8 +309,8 @@
                 >
             </footer>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-        <script>eruda.init();</script>
+        <script src="https://cdn.jsdelivr.net/npm/eruda"></script><script>eruda.init();</script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="script.js"></script>
     </body>
 </html>
