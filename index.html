@@ -100,11 +100,11 @@
     const numb_gametickspeed = document.getElementById("numb_gametickspeed");
 
     document.addEventListener("DOMContentLoaded", () => {
-        const savedValue_toggle_fullscreen = localStorage.getItem("toggle_fullscreen");
-        const savedValue_range_volmaster = localStorage.getItem("range_volmaster");
-        const savedValue_range_voleffect = localStorage.getItem("range_voleffect");
-        const savedValue_range_ctrlmousesense = localStorage.getItem("range_ctrlmousesense");
-        const savedValue_numb_gametickspeed = localStorage.getItem("numb_gametickspeed");
+        const savedValue_toggle_fullscreen = localStorage.getItem("toggle_fullscreen") || "true";
+        const savedValue_range_volmaster = localStorage.getItem("range_volmaster") || "100";
+        const savedValue_range_voleffect = localStorage.getItem("range_voleffect") || "100";
+        const savedValue_range_ctrlmousesense = localStorage.getItem("range_ctrlmousesense") || "100";
+        const savedValue_numb_gametickspeed = localStorage.getItem("numb_gametickspeed") || "500";
         
         toggle_fullscreen.checked = savedValue_toggle_fullscreen === "true";
         range_volmaster.value = savedValue_range_volmaster;
