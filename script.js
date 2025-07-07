@@ -7,7 +7,7 @@ const GameField = document.getElementById("game_UI");
 let startY = 0;
 let startTop = 0;
 let inputType = null;
-let TickSpeed = localStorage.getItem("numb_gametickspeed");
+let TickSpeed = localStorage.getItem("numb_gametickspeed") || "300";
 
 const skins = [
     { name: "Brass", image: "skins/brass.png", desc: "The Default Trumpet." },
@@ -49,6 +49,15 @@ const songs = [
         file: "songs/braucheeinpsychologe/trumpethell.json"
     }
 ];
+
+window.addEventListener("load", function () {
+    const currentParams = new URLSearchParams(window.location.search);
+    const uiParam = currentParams.get("ui");
+
+    if (uiParam != null) {
+        displayUI(uiParam);
+    }
+});
 
 document.querySelectorAll("[tooltip]").forEach((el) => {
     const text = el.getAttribute("tooltip");
@@ -141,6 +150,10 @@ function displayUI(idToShow) {
         footer?.classList.remove("hidden");
         navbar?.classList.remove("hidden");
     }
+     
+    const url = new URL(window.location);
+    url.searchParams.set("ui", idToShow);
+    window.history.replaceState({}, '', url);
 
     // UI-Wechsel
     sections.forEach((sec) => sec.classList.remove("active"));
@@ -368,7 +381,7 @@ let el3
 
 el1 = el1.getBoundingClientRect().top.toFixed(0);
 el2 = el2.getBoundingClientRect().top.toFixed(0);
-el3 = el1 - el2
+el3 = el1 - el2;
 console.log(el3);
 
 if (el3 < 10) {
@@ -446,4 +459,4 @@ document.getElementById("importSettings").addEventListener("change", async (e) =
           });
         }
       });
-      }
+}
